@@ -1,15 +1,16 @@
 package com.example.hwdatabase;
 
-import dao.EmployeeDAO;
+import service.EmployeeDAO;
 import model.Employee;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import service.EmployeeDaoImpl;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
 public class HwDataBaseApplication {
 
     public static void main(String[] args) {
@@ -37,15 +38,16 @@ public class HwDataBaseApplication {
                 System.out.println();
 
 
-                EmployeeDAO employeeDAO = new EmployeeDaoImpl(connection);
+                EmployeeDAO employeeDAO = new EmployeeDaoImpl();
 
-                Employee employee = new Employee("Leonid", "Shevchenko", "Man",55,3);
+                Employee employee = new Employee("Petr", "Petrov", "Man",25,3);
 
                 // Вызываем метод добавления объекта
                 employeeDAO.create(employee);
 
                 // Создаем список наполняя его объектами, которые получаем
                 // путем вызова метода для получения всех элементов таблицы
+                employeeDAO.delete(employee);
                 List<Employee> list = new ArrayList<>(employeeDAO.readAll());
 
                 // Выведем список в консоль
