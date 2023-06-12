@@ -5,40 +5,34 @@ import model.Employee;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Service;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class EmployeeDaoImpl implements EmployeeDAO {
+public class CrudDaoImpl implements CrudDao {
     @Override
-    public void create(Employee employee) {
-        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+    public void create(Object obj) {
+        try(Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()){
             Transaction transaction = session.beginTransaction();
-            session.save(employee);
+            session.save(obj);
             transaction.commit();
         }
     }
 
     @Override
-    public Employee readById(long id) {
-        return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(Employee.class, id);
+    public Object readById(long id, Class a) {
+        return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(a.getClass(),id);
     }
 
     @Override
     public List<Employee> readAll() {
-        List<Employee> employees = (List<Employee>) HibernateSessionFactoryUtil
+        List<Employee> employees = (List<Employee>)  HibernateSessionFactoryUtil
                 .getSessionFactory().openSession().createQuery("From Employee").list();
         return employees;
     }
 
     @Override
-    public void update(Employee employee) {
-        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+    public void update(Object employee) {
+        try(Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             session.update(employee);
             transaction.commit();
@@ -46,8 +40,8 @@ public class EmployeeDaoImpl implements EmployeeDAO {
     }
 
     @Override
-    public void delete(Employee employee) {
-        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+    public void delete(Object employee) {
+        try(Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             session.delete(employee);
             transaction.commit();

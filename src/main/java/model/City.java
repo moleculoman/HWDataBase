@@ -1,27 +1,40 @@
 package model;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Table(name = "City")
 public class City {
-    int city_id;
-    String city_name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    int cityId;
+    @Column
+    String cityName;
 
-    public City(int city_id, String city_name) {
-        this.city_id = city_id;
-        this.city_name = city_name;
+    @OneToMany(mappedBy = "cityId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Employee> employees;
+
+    public City(String cityName) {
+        this.cityName = cityName;
     }
 
-    public int getCity_id() {
-        return city_id;
+    public City() {
     }
 
-    public void setCity_id(int city_id) {
-        this.city_id = city_id;
+    public int getCityId() {
+        return cityId;
     }
 
-    public String getCity_name() {
-        return city_name;
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
     }
 
-    public void setCity_name(String city_name) {
-        this.city_name = city_name;
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 }
